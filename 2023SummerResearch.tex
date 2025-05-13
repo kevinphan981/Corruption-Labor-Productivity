@@ -1,0 +1,324 @@
+\documentclass[12pt]{article} %obligatory, always do this...
+\usepackage[numbers]{natbib} %for mathematical formulas, numbers...?
+\usepackage{natbib}
+\setcitestyle{authoryear,round, semicolon} % this is for the specific citation style, which is in the author year format with round paranthesis surrounding it.
+%\usepackage{indentfirst} %to indent the first paragraph in a section
+\usepackage{amsmath}
+\usepackage{hyperref} %for the email hyperlink...
+\usepackage{times} %times new roman
+\usepackage{layout} %was to customize the layout of the document (margins and stuff), but was soon replaced by geometry
+\usepackage{setspace} %for word spacing
+\usepackage{dcolumn}
+\usepackage{fancyhdr} %supposedly really good for headers and footers
+\usepackage{geometry} % you can change the document size and so on...
+\geometry{
+	letterpaper,
+	left = 1in, 
+	top = 1in,
+	right = 1in,
+	bottom = 1in
+}
+
+\usepackage{graphicx} %this is for pictures
+\graphicspath{ {./images/} }
+
+\setlength\parindent{.5in}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{} % sets both header and footer to nothing
+\renewcommand{\headrulewidth}{0pt}
+% your new footer definitions here
+\fancyfoot{}
+
+\begin{titlepage} % I have to do this for the cover page, unfortunately
+	\hfill \break 
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\hfill \break
+	\begin{center}
+			Corruption and Labor Productivity: A Panel Data Analysis of Italy 2000-2017 \\	
+			\hfill \break 
+			\hfill \break
+			\hfill \break
+			\hfill \break
+			Kevin Giathinh Phan \\
+			\hfill \break 
+			\hfill \break
+			\hfill \break
+			\hfill \break	
+			Project Advisor: Belinda Azenui \\
+			\hfill \break	
+			Department of Economics\\
+			\hfill \break
+			\hfill \break
+			\hfill \break	
+			Denison University Summer Scholars\\
+			2023
+		\end{center}
+
+\end{titlepage}
+
+\newpage
+\begin{center}
+	\section*{Abstract}
+\end{center}
+\doublespacing %gotta make everything double spaced
+
+		In this study, I investigate the relationship between corruption crimes and labor productivity in Italy from 2000-2017. A panel dataset was fabricated using data collected from ISTAT and OECD in order to be used for analysis. I specify an ARDL model to estimate the long and short-run effects of corruption on labor productivity. I consequently also test for cointegration (a long-run relationship) in the model via the method outlined by \citet{pesaran_bounds_2001}. Through the cointegration test and use of different modeling techniques, I find that there is no long-run relationship between corruption and labor productivity. However, there is a positive relationship between corruption and labor productivity in the short-run. I discuss the possible theoretical explanations of this finding, as well as the policy implications of this research.
+
+\let\thefootnote\relax\footnotetext{
+	\noindent 
+	$\bullet$ I would like to thank Dr. Azenui and the Lisska Center for their support during this process. I have also found the comments by other Summer Scholars and Professors in the Economics Department to be helpful as well. Any further inquiries can be met through \href{mailto::phank9@hawaii.edu}{phank9@hawaii.edu}}.
+
+
+\rfoot{Phan \thepage}
+
+\newpage
+
+\section*{Introduction}
+
+The academic literature concerning institutional quality is a crucial topic for the study of economic growth. Seymour Martin Lipset’s famous “theory of modernization” found that better political and governance systems allowed democracy to flourish as a result of economic growth \citep{lipset_social_1959}. Hence, there is an intimate relationship between governance and economic performance, with corruption being cited as an reason why many nations that fare poorly economically. In terms of corruption, more specifically governmental corruption, there is both economic and philosophical perspectives which justify the need to act against the crime. Corruption, much like democracy and property rights, is an integral factor in studying political systems and economic development. 
+
+Corruption is a multifaceted issue that not only influences economic development, but also institutional quality through a vicious cycle. There is strong evidence that corruption reduces people’s trust in government and political participation, which worsens institutional quality thorugh the lack of voting and accountability \citep{giommoni_exposure_2021}. The IMF has found that there are many issues that result from public corruption, notably the increased levels of inequality due to the lack of investment in public goods like health and educational resources \citep{international_monetary_fund_corruption_2016}. This in turn affects government perception and political participation  \citep{lombardo_individual_2022, transparency_international_are_2021}. Thus, corruption can exacerbate the worsening conditions of government while also harming the welfare of citizens. 
+
+Yet, corruption is difficult to define and measure. “Corruption” ultimately depends on the socio-cultural context that the individual approaches the situation with, and corruption is a discrete crime that isn’t regularly spotted nor reported. There are likely common practices that can be justified as corruption through interlocution but are not due to those things being part of the local culture and norm. This is commonplace in countries like Italy, where there are many practices that are not considered to violate the statutes for corruption \citep{pardo_corrupt_2018}. In terms of measurement, corruption has been quantified in numerous ways, all with their respective benefits and weaknesses. Examples of such are sentiment-enhanced indices using news data, survey data, crime conviction data, and close proxies such as institutional quality measures \citep{cao_sentiment-enhanced_2021, del_monte_determinants_2007, grundler_corruption_2019-1}. As a result, there are different approaches to study corruption, with various methodological issues plaguing how corruption is measured as well as defined. 
+
+Policy against corruption is rare, but seems to have an impact. In Italy, there has been few that have made an impact. The infamous mani pulite or “clean hands” campaign in the 1990s was integral to shaping future Italian perceptions on corruption and government. Numerous politicians were accused and tried for corruption, causing an uproar by the public and press  \citep{vannucci_controversial_2009}. In 2012, the \emph{Autorità Nazionale Anticorruzione} (ANAC) or National Anti-Corruption Authority was established to better monitor the government and be transparent. They particularly monitor public contracts and awards granted by the government \citep{anac_anac_2023}. These actions have improved public perceptions of corruption in the government. However, many policy analysts question the efficacy of these policies.
+
+\begin{figure}[h]
+	\centering
+	\caption{Corruption in Italy Since 2000}
+	\includegraphics[scale = 0.4]{corruptioncrimes}
+\end{figure}
+
+In this study, the author intends to analyze the impact that corruption has on labor productivity in Italy from 2000-2021. Italy is notorious for its history of crime, with corruption having a strontheng connection to organized crime, which has had a strong influence in media and politics. Compared to other EU members, Italy is more corrupt based on perceptions-based indices (Italy, 2023). However, despite the relatively high levels of corruption, the country has managed to do quite well economically. Italy is a G7 member and has one of the highest GDP per capita in the world. Yet, the nation has had stagnant productivity over the past few decades \citep{oecd_classifying_2019}. While both capital and labor productivity have seen meager improvements, the focus on labor productivity is chosen due to the lack of studies that take that lens.
+
+\begin{figure}[h]
+	\centering
+	\caption{Labor Productivity Growth Since 2000}
+	\includegraphics[scale = 0.4]{labprodgrowth}
+\end{figure}
+
+The stagnant, yet high performance by the country serves as the rationale for this study, with corruption being a possible explanation to the stagnation. In an exploratory paper by Pellegrino and Zingales, they found that poor institutional quality, in particular rent seeking and nepotism, has been a cause of Italy’s stagnating productivity in the past two decades \citep{pellegrino_diagnosing_2017}. While not applying to the issue of stagnation, there have been papers that attempt to establish the relationship between economic growth and corruption in Italy, with intriguing results that indicate a negative relationship. Yet, to the author’s knowledge, there has been little attempts to clarify the relationship between corruption and labor productivity within Italy, let alone productivity as a whole. There are few papers on corruption and labor productivity overall, with those focusing on cross-country analysis. This leaves this paper as one of the few studies that shed light on corruption and labor productivity in a cross-regional setting.
+
+Using an autoregressive distributed lag model, I find that corruption has no long run effect on labor productivity but has a mixed short run effects. I corroborate my analysis by doing robustness checks using other corruption measures and measures of labor productivity. Finally, I discuss the implications of these findings with the corresponding literature and give policy recommendations to how corruption in Italy could be improved.
+
+
+
+	
+\section*{Literature Review}
+
+Much of the rationale behind studies of corruption lies in the “’grease’ or ‘sand’ the wheels” debate. However, this debate seems to have reached its conclusion, as there is overwhelming evidence that corruption has a negative impact on the economy, thus “sanding the wheels” \citep{aidt_corruption_2009, grundler_corruption_2019-1, uberti_corruption_2022}. The reasoning behind the grease hypothesis was due to the dynamics between corruption and other institutional factors in relationship to economic activity. Some scholars believed that there were possible advantages of paying bribes or doing other forms of corruption given certain institutional arrangements. Yet, there are little studies to support this, and many have been addressed by other scholars \citep{aidt_corruption_2009}. 
+
+In the most recent study to date, \citet{uberti_corruption_2022} delivers strong empirical evidence using three centuries worth of data in a cross-country analysis. Using the V-Dem dataset, he proves that corruption has an overall negative effect on economic growth. The use of the V-Dem dataset is rare for most scholars in the field, as many opt into using perception-based indices such as Transparency International’s Corruption Perception Index (CPI). \citep{grundler_corruption_2019-1} found that the use of this data is riddled with many issues, most notably an incomparability issue. The collection methodology for CPI was only standardized from 2012 onwards, leaving the use of previous years data to lead to biased results. They found that most panel data methods that economists have used on this data didn’t solve the incomparability issue, consequently causing biased results. Using only the data from 2012 to 2019, Grundler and Potrafke were able to demonstrate that corruption had a negative effect on growth.
+
+Most studies on corruption are done as cross-country analysis due to the size and availability of data. Additionally, many scholars use perceptions indices to be their measurement of corruption, which have been shown to be relatively suspect in terms of econometric and interpretive power \citep{jahedi_advantages_2014, kong_chinas_2020}. Yet this has not stopped some economists from being able to do cross-regional or within-country analysis with different types of data. An example of this has been scholars studying the impacts of corruption in Italy using cross-regional analysis and local crime data. In Italy, the results of corruption are overwhelmingly negative. Other than this effect, scholars typically find the economic channel that is disrupted by corruption, leading to negative outcomes. The seminal work done by Mauro (1995) found that corruption had reduced private investment, leading to issues in human capital accumulation and productivity. 
+
+Research on Italian corruption has found that the phenomenon decreased growth in nearly all cases. Using data from the Bank of Italy in an autoregressive lag model, \citet{del_monte_public_2001} found that public procurement expenditures deceased because of corruption. This is the most well-known and cited article in the domain, leading to many subsequent papers by other scholars following a similar research approach. Public procurement is a common topic for studies of corruption due to the nature of the contracts given to construction firms being large and complex enough to hide rent-seeking activities \citep{locatelli_corruption_2017-1}. Relating to the public sector, \citet{romano_environmental_2021} discovered that corruption caused higher levels of urban waste per capita, an indication that waste management systems are not being properly run. However, instead of an ARDL model as Del Monte and Papagni have used, the Romano et al. implement a PSM model, or propensity score matching model. Overall, there is a substantial negative environmental impact due to the lack of compliance in regulations and mismanagement \citep{bimonte_effect_2019}. Another study, using a ARDL model from 1968 to 2011, found that the impact of corruption was negative for long-term growth for all Italian regions \citep{lisciandra_economic_2016}. The authors also found that as corruption increased, the effect on economic performance diminished, indicating a nonlinear relationship. \citet{neanidis_empirical_2017} developed a theoretic model and discovered that corruption with organized crime distorts growth less when both are present. In general, there is a consensus that corruption causes poorer rates of growth and development, with different methods producing similar results. 
+
+When it comes to anti-corruption efforts, there is evidence to suggest that higher levels of monitoring cause growth to increase, shown by a lagged dynamic panel data model \citep{coppier_role_2013}. Thus, Italian Anti-Corruption authorities do focus on procurement contracts and monitor the progress made on them \citep{anac_anac_2023}. \citet{finocchiaro_castro_is_2018} find that increased competitiveness in the public works sector reduces corruption, which is a direct solution to what \citet{del_monte_public_2001} had found in public expenditure. While there are many papers attempting to diagnose the effects of corruption on different sectors/portions of the economy, there are very little that present tenable solutions to the issue. This is in part because the political structure of Italy is complex, with local and national governments having different effects on the nature of corruption 
+
+
+
+
+\section*{Data}
+This paper primarily utilizes data from the OECD and ISTAT (Italian National Institute of Statistics). From the OECD, data on output and labor productivity are found pertaining to Italy from 1970-2021 in the form of GDP and GVA per worker. The OECD also provides educational attainment rates, in which I use the percentage of adults who possess a tertiary (college/university) degree. From ISTAT, I use gross capital formation by region with corruption crime data. Most ISTAT datasets are only available up to 2000 in terms of the length of a time series, thus we have a dataset from 2000-2017, which is joined. When applicable, all data was made constant to 2015 US dollars. All datasets are in the form of panel data, which include the time series as well as data points for every territory in Italy. In OECD nomenclature, these territories are NUTS2, which stands for the second tier of the “Nomenclature of Territorial Units for Statistics” \citep{oecd_classifying_2019}. This allows for the cross-regional analysis to be done which makes the panel data heterogeneous. 
+
+Within the data, I have considered all crimes considered under the Italian penal code to be “crimes against the public administration” to be corruption. This is because these crimes do benefit an individual/selected group at the expense of society, which falls under the definition of corruption. \citet{del_monte_public_2001} exclude crimes such as the “neglect or refusal of activities” because the crime’s context may not be tied to corruption. However, I argue for the inclusion of this variable due to many crimes being paired or having a sequential order, such as taking a bribe to not report certain violations/crimes. This activity would register as two crimes based on the Italian statutes. Nevertheless, the inclusion of this metric still does not influence the data being the lower-bound measurement of corruption.
+
+\begin{table}[!htbp] \centering \renewcommand*{\arraystretch}{1.1}\caption{Summary Statistics}\resizebox{\textwidth}{!}{
+		\begin{tabular}{lrrrrrrr}
+			\hline
+			\hline
+			Variable & N & Mean & Std. Dev. & Min & Pctl. 25 & Pctl. 75 & Max \\ 
+			\hline
+			loglabprod & 378 & 11.3 & 0.13 & 11.034 & 11.185 & 11.415 & 11.532 \\ 
+			corr & 378 & 1289.143 & 1315.998 & 23 & 264.75 & 1728 & 10985 \\ 
+			capitalgdp & 378 & 0.136 & 0.019 & 0.097 & 0.122 & 0.149 & 0.197 \\ 
+			pcteduc & 368 & 16.686 & 4.734 & 7.15 & 12.725 & 20.279 & 27.45\\ 
+			\hline
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+In my analysis, I will be using these variables of interest. The regressand, $lnlabprod$ is the natural log transformation of my measure of labor productivity, GVA per worker. The primary regressor of my analysis is $corr$, which is the aggregated corruption crimes in each region by year. I employ two controls in the model. The first is $capitalgdp$, which is gross capital formation divided by GDP in constant 2015 USD. This could be interpreted theoretically as the capital share. The other is $pcteduc$, which is the percentage of working adults that have a tertiary degree, my proxy for human capital and managerial ability. All the variables will have lags in the model. 
+
+\subsubsection*{Missing Data Imputation}
+
+While not a pressing issue, I had discovered that there were a few missing observations in the variable pcteduc (percentage of population with tertiary degrees), this required missing data imputation or outright removal. Less than 5\% of my observations (N = 378) was affected by this issue, which is relatively small. Although it lacks sophistication, I used the "next observation carried back” or NOCB approach to impute missing data values. As a result, this would preserve the overall length of the series, but may distort the variance of the time series. I consequently have also analyzed the ARDL model with the missing data not imputed, with the observations simply being taken out. This leaves a panel data set of N = 35X. The results of estimating the model with this data set is alike to the panel data set with imputed missing values. 
+
+
+\section*{Methodology}
+
+The approach of the paper is heavily like Del Monte and Papagni’s (2001) analysis of Italy using a similar ISTAT dataset. Most studies of corruption utilize panel data due to its ability to analyze the changes in constant actors over a period. I use a dynamic panel data model, specifically an ARDL model, to model the effects of corruption on labor productivity. The most notable benefit of the ARDL model is the ability to estimate short and long run effects. I implement mean group and fixed effects estimation techniques. 
+
+The statistical software used with be \emph{R}, with the packages \emph{plm} and \emph{ARDL} being used heavily. Typically, the ARDL model will be estimated using a pooled mean groups estimator (PMG) or standard mean groups estimation technique (MG), determined by implementing the Wu-Hausmann test. To my knowledge, there is no pooled mean groups estimator in \emph{R} that is configurable to my analytical needs. Hence, the application of the mean groups estimator may not be the best application due to the inability to test which of the two are more efficient. Additionally, the fixed effects estimation technique may also suffer from bias when used in dynamic panel data models \citep{nickell_biases_1981, pesaran_time_2015}. Nevertheless, I still use a fixed-effects "within" estimation procedure in order to better find a causal relationship between corruption and labor productivity. 
+
+Additional testing has found the presence of cross-sectional dependence, heteroskedasticity, and endogeneity. I am able to implement panel corrected standard errors (PCSE) as well as regular heteroscedastic-robust standard errors in order to remedy the first two issues. However, endogeneity requires an IV estimation which is not used in this study. In Del Monte and Papagani (2001), they implement a two stage least squares estimation approach with a least squares dummy variable estimation as well. In a working paper by Lisciandra (2016), they utilize a system generalized method of moments (SYS-GMM) estimator with their ARDL model. These estimations would account for the endogeneity and would be more reliable estimators overall. 
+ 
+There could be many more explanations to the performance of the model. Another particularly striking flaw in this application of the ARDL model is the small sample of data. Although a panel dataset of N = 378 is commendable for a model that can function with much less, it is possible that more observations and a greater time series would have likely contributed to much more robust results. In the papers that I have cited as being the inspiration for the use of the model, they had access to pre-2000 corruption data and were able to have a panel spanning over 30-40 years, with the number of observations being greater than 800. Because of this, I suspect that their cointegration tests and estimates demonstrated a more potent relationship between corruption and their selected variable of interest.
+
+
+In prior testing, many of the models suffered from multicollinearity and autocorrelation. For multicollinearity, I used the variance inflation factor (VIF) of the model. As per rule of thumb, I consider the model to suffer from multicollinearity if the VIF value is greater than 10. The ARDL model specified in (2) did not suffer from multicollinearity. However previous iterations that included variables such as $rdexpend$ and $govtgdp$ did, this resulted in their consequent removal. The variable $rdexpend$ was a proxy for technological progress (R\&D expenditure by region), while $govtgdp$ was the government spending to GDP ratio for the regional governments.
+
+
+\subsection*{Model}
+I use an Auto-Regressive Distributed Lag (ARDL) model to investigate the short and long-run effects of corruption in a panel dataset. This method is used by numerous scholars who have studied corruption at a cross-regional scale, which served as the inspiration and rationale behind the use of an ARDL model in this study \citep{del_monte_determinants_2007, lisciandra_economic_2016}. Specifically, I will be using the ARDL procedure as outlined by \citet{pesaran_bounds_2001}, where they deploy a cointegration bounds test to observe the long-run relationship in the model.  
+
+A basic ARDL model can be expressed as: 
+\begin{equation} \label{eu_eqn}
+	y_{i,t} = \beta_{0} + \beta_{1}y_{i,t-1} + \beta_{2}y_{i,t-2} + \ldots + \beta_{k}y_{i,t-p} + \alpha_{0}x_{i,t} + \alpha_{1}x_{i,t-1} + \alpha_{2}x_{i,t-2} + \alpha_{q}x_{i,t-q} + \varepsilon_{i,t}
+\end{equation} %there are some variable issues here, more like subscripting issues.
+
+Where there are the distributed lags of the dependent variable, y, included as regressors in the model with parameters $ \beta_j$ as $j=1, 2,\ldots,\ k $, with the respective time lags in the autoregressive variable $ y_{t-m} $ where $ m=1,\ 2,\ \ldots,p\ $. Similarly, there is also the standard regressors in levels with their respective lags, $ x_{t-z} $ as $ z=1,\ 2,\ \ldots,\ q $. Finally, $\varepsilon_{it}$ is the disturbance term.
+
+\subsection*{Diagnostic Testing}
+\indent The first test to run to determine whether an application of the ARDL model is appropriate is the unit root test. The data must be of the integration order of one or zero. I utilize an ADF test, or the augmented Dicker-Fuller test, to determine whether my variables are stationary or not. I find that my data is stationary with both integration order one and zero. Results from the KPSS test for stationarity support these findings. 
+
+Another essential assumption is that the residuals of the model are serially independent. If the error term is not serially independent, then the results of the cointegration bounds test will be biased. I utilize autocorrelation graphs as well as Durbin-Watson and Breusch-Pagan tests to discern whether there was any serial correlation in the model. I find no instance of serial correlation. 
+
+To ensure that there are no structural breaks in the data, I utilize a variety of tests. I use the CUSUM tests to see if there are any breaks visually. In Figure 3, I utilize an OLS based CUSUM test on the ARDL model that I have specified. Optimal lags are already selected using an automated feature. Based on a 5\% confidence interval, there is no evidence  that there is a structural break in the model. However, after additional testing using Chow's test and Andrew's test, there is evidence of a structural break present in the data. To discover whether there were multiple structural breaks, I used a BIC-based assessment by \citet{jushan_bai_computation_2002}, which demonstrates that there are numerous structural breaks in the data. This is shown visually by the "U"-shaped curve in Figure 4. 
+
+Typically, after finding structural breaks. The models are estimated on segmented sections of the data to avoid the break. However, to safeguard the number of observations and degrees of freedom in the model, I implement dummy variables in order to remedy the issue. In total, I find three breakpoints in my data and code my dummy variable to take account of it. 
+
+
+\subsubsection*{Optimal Lag Selection}
+
+One of the strengths of the ARDL model is the use of lagged variables in the regression. This necessitates the use of an optimal lag to be used on the model. This is done through a model selection assessment such as the Akaike information criterion (AIC) or the Bayesian information criterion (BIC). I utilize the AIC to determine the best lags for the model. Each lag period is one year due to the format of the data and all variables in the ARDL model can have a unique lag. With AIC, I find that it will perform the best with the selected lags of one year for all variables. 
+Thus, my ARDL model is specified as: 
+
+\begin{equation} \label{eu_eqn}
+	\begin{aligned}
+	\widehat{lnlabprod}_{i,t}= \beta_{0}+\beta_{1}{lnlabprod}_{i,t-1} +\alpha_0{corr}_{i,t} + \alpha_1{corr}_{i,t-1} +\\
+	\gamma_0{capitalgdp}_{i,t}t+
+	\gamma_1{capitalgdp}_{i,t-1} + \zeta_0{pcteduc}_{i,t}+\zeta_1{pcteduc}_{i,t-1} + \varepsilon_{i,t}
+	\end{aligned}
+\end{equation}
+
+Where $lnlabprod$ is the natural log of labor productivity, $corr$ is the total number of corruption crimes, $capitalgdp$ being the capital formation to GDP ratio, and $pcteduc$ being the percentage of the population with a tertiary education. All variables have the lag of one year, with a constant being included in the equation. This model is an outline to the two models that will be devleoped below.
+
+%
+\subsubsection*{Unrestricted Error Correction Model with Fixed Effects}
+
+As mentioned before, the ARDL model serves as a template for different specifications. The primary equation that will be used for analysis is the "conditional" error correction model. This has also been referred to as the "unrestricted" error correction model (UECM), which I will use hereinafter. The UECM provides both the long and short-run coefficients in the ARDL model, which is necessary for the cointegration test as per \citet{pesaran_bounds_2001}. Consequently, I specify the UECM:
+
+\begin{equation} \label{eu_eqn}
+	\begin{aligned} 
+	\noindent 
+	\Delta\widehat{lnlabprod}_{i,t} = \beta_{0}+\beta_{1}{lnlabprod}_{i,t-1} +\alpha_{0}\Delta{corr}_{i,t} + \alpha_{1}{corr}_{i,t-1} +\\
+	\gamma_0\Delta{capitalgdp}_{i,t}+
+	\gamma_1{capitalgdp}_{i,t-1} + \zeta_{0}\Delta{pcteduc}_{i,t}+\zeta_1{pcteduc}_{i,t-1} + \alpha_{i} + \omega_{i} + \varepsilon_{i,t}
+	\end{aligned}
+\end{equation} 
+
+Where I introduce $\alpha_{i}$ to account for regional heterogeneity in the fixed effects model. An alternative way to outline the model is to include dummy variables of all the regions, though that is deemed unnecessary for the 21 regions used in this analysis. The variable $\omega_{i}$ is the dummy variable in order to account for the structural breaks in the data.
+
+
+\subsubsection*{Short Run Model with Fixed Effects}
+
+In the advent that the cointegration test demonstrates that there is no long-run relationship between the corruption and labor productivity, I specify a short-run ARDL model. A short-run ARDL model with fixed effects is specified as follows: 
+
+
+\begin{equation} \label{eu_eqn}
+	\begin{aligned}
+		\Delta\widehat{lnlabprod}_{i,t} = \beta_{0}+\beta_{1}\Delta{lnlabprod}_{i,t} +\alpha\Delta{corr}_{i,t} + \gamma\Delta{capitalgdp}_{i,t}+ \zeta\Delta{pcteduc}_{i,t} +
+		\alpha_{i} +  \omega_{i} + \varepsilon_{i,t}
+	\end{aligned}
+\end{equation}
+
+Where $\alpha_{i}$ is also the fixed effects for regional heterogeneity, as well as $\omega_{i}$ being the structural break dummy variable. An element that must be underscored in this model is that there is no specified error correction term. It is crucial to emphasize that this model is not the error correction model, but a standard ARDL model that captures a similar process. This specification also closely resembles a first differenced panel regression. 
+
+
+\subsection*{Cointegration Testing}
+
+The crucial test for cointegration is the bounds-f-test and t-test developed by \citet{pesaran_bounds_2001}. This is the primary test that I will utilize to determine whether there is a long-run relationship in the model. The bounds-f-test serves as the primary test to determine cointegration, while the bounds-t-test is a cross-check. The bounds are determined in accordance with the parameter “alpha” for the significance of the p-value to compare against the null hypothesis of no cointegration. If the model test statistic is below the I(0) bound, then the model fails to reject the null hypothesis. However, if the test statistic is above the I(1) bound, then the null hypothesis is rejected. Any value in between these bounds imply that the results are inconclusive. Both the f and t-test must reject the null hypothesis to conclude that there is cointegration in the model as there is the possibility for nonsensical cointegration in the model.  
+
+Pesaran, Shin, and Smith outline five different cases to be considered in the use of the bounds cointegration test. In my application of the model, only case II (restricted intercept, no trend) and case III (unrestricted intercept, no trend) are applicable. Following the outlined procedure, I used the UECM to have the Wald test estimate the respective f and t-values with the parameters of the model. Based on both the bounds-f and bounds-t-test, I find no cointegration in my model. 
+
+\section*{Results}
+
+I take estimates of the UECM and short-run variant of my original ARDL model. The UECM is particularly important in that it includes the short and long-run effects of the original model. Hence, there are much more regressors in the equation, which can be seen in Table \ref{table:second}. Evidence of no long run relationship is also present, as the lagged variable of corruption is not statistically significant. The short-run version of the ARDL model is composed of the coefficients in the difference of the levels of the original ARDL model, and results are reported in Table \ref{table:third}. It does not include the error correction term, which is the rate of adjustment. %I may not need this because it's redundant.
+
+In the regression, heteroscedasticity does not affect the coefficients as the estimator is unbiased, but it does present an issue in the reported standard errors. As a result, I utilize White’s heteroscedasticity-corrected standard errors. Additionally, due to the presence of cross-sectional dependence, I use panel corrected standard errors as well. 
+
+I use the fixed effecs "within" regression on both the UECM and short-run ARDL model. I find that the results for the UECM demonstrate no relationship between corruption and labor productivity in the long-run. This follows the previous regressions and the cointegration test. However, there is a significant short run relationship in the short-run model.
+
+While small, the coefficient for the short-run variable of corruption is positive, indicating that an increase in corruption has a positive effect on labor productivity. While seemingly small, the coefficient for $corr$ represents the impact of every additional corruption crime. Hence, for regions where corruption crimes are recorded in the thousands, the impact of corruption on labor productivity is much greater. As an example, given the coefficient in the regression, for every additional 1,000 corruption crimes, there would be around a 0.54\% increase in labor productivity in the short-run, only to dissapate after a year (given the lag structure of the UECM model). For provinces like Lazio, whose average corruption crimes is around 2,000, it would imply an effect of 1.08\%. For stagnant growth in yearly labor productivity, corruption seemingly gives a boost that quickly fades away. 
+
+If one were to expend this result nationally, where there are tens of thousands of corruption crimes in total, there is an even larger calculated effect. For every 10,000 additional corruption crimes, there would be a 11.8\% increase in labor productivity. While this result is substantial, it is unlikely to apply given that the model is specified based on regional data. While these estimates are important, it is crucial to also account for the fact that corruption crimes is not a perfect measurement of the amount of corruption in Italy. One could interpret corruption crimes at face value and make the opposite interpretation that the increase in convictions removes corruption from society, generating a positive benefit on labor productivity. However, this is unlikely due to the general consensus that the current Italian policy is ineffective or stagnant at best \citep{woodhouse_accountability_2022, della_porta_politics_1994, daniele_never_2023}. Corruption crimes can be considered a lower-bound measurement of overall corruption because not every corrupt practice is brought to court, nor reported in the first place. Corruption also exists in the judiciary process, further bufuddling the measurement of corruption \citep{della_porta_judges_2001, alberti_political_1995}. Although there are many investigations and reports of corruption, there are very few confictions \citep{guarnieri_political_2021}. Due to this, there may even be a stronger effect of corruption on labor productivity due to the nature of the data.
+
+There can be many theoretical explanations for the performance/findings of the ARDL model.  There is the possibility that corruption may be prevalent in industries that tend to have higher productivity, which may cause the increase in short term productivity. However, this does not explain why the effect does not last into the long-term. There may also be other sectoral changes that arise because of corruption. This type of analysis would warrant a different model to investigate these effects. There is also the possibility that the aforementioned "grease" hypothesis of corruption may have merits in short-run dynamics, possibly aiding firms in production by reducing possibly labor issues.
+
+The results of this analysis would imply that there is significant amounts of passive corruption (where the firm is the initiator of the corrupt transaction) which could justify the positive impact of corruption on short-run labor productivity \citep{capasso_corruption_2022}. This commonly takes the form of bribes, but nepotism is also another way in which firms can extract rents. An alternative explanation is that there is active corruption, where a politician or bureaucrat is the initiator and demands something from the firm. A common corrupt exchange that exhibits this nature is nepotism in firms from political connections. 
+
+Nepotism is reknown as a common issue in Italian industries, and would apply in this study of corruption and labor productivity. Generally speaking, Italian experts claim that nepotism is harmful towards labor productivity \citep{tyler_smith_clean_2020}. However, this is mostly based on theory. While there is evidence that nepotism is prevalent in numerous public and private industries \citep{durante_academic_2011, gagliarducci_politics_2020}, these studies do not directly tie into discussions about labor productivity or economic growth. \citet{gagliarducci_politics_2020} find that politicians are able to extract rents from private industry for their family, but this initial effect may not be large given the authors estimate 0.4\% of private sector jobs that are generated by this phenomenon. Rather, the authors propose that there is an exchange between the firms and politicians. By engaging in nepotism and hiring the family members/friends of politians, the firm may earn political favors, which could reduce things like tax burdens and regulations. In a way, nepotism is another way of inducing a bribe. 
+
+Further findings from Gagliarducci and Manacorda support the other findings in this paper as well. They find that this exchange of nepotism for political favors is inefficient for both parties. This would corroborate with the weak long-run estimates of corruption on labor productivity not being statistically significant. It may be that the firm or official may gain initial benefits at first, but quickly lose the ability to extract rents and profit due to the theoretical consequences of nepotism, namely inferior labor and managerial talent. Gagliarducci and Manacorda find that nepotism for political favors is a weak strategy to secure rents. 
+
+Yet the exchange for political favors has a strong theoretical underpinning. A theoretical paper by \citet{gambetta_why_2018} finds that there are many reasons why Italians would engage in corrupt practices, namely to avoid the congested legal system. Italy has far more laws and civil court cases than the average EU member, hence giving reason to why firms and officials would engage in corrupt practices. Gambetta names this phenomenon the sharing of compromising information (SCI), which allows both corruption and development to somewhat coexist. With actors having compromising information on each other, they are more likely to make a corrupt deal due to the enforcement of the contract being that they can simply report the other actor to the government. This provides an explanation to the possibility that productive economic transactions can take place while also being corrupt at the same time. 
+
+Furthermore, \citet{zhang_changing_2015} conducted an experiment in Italy that supports this theory. In the experiment, students were asked questions about a hypothetical transaction between themselves and another student. The treatment was that there would be that the students would have more information on who the other person was, revealing corrupt/illegal actions that the other student has engaged in. Instead of making students less confident in the transaction and in their peers, students actually found themselves more trusting of the other person and the transaction because of the revealed information. This demonstrates that the sharing of compromising information can be a instrument to facilitate economic transactions. Thus, at least in Italy, corruption can actually be economically productive. 
+
+ Policy-wise, this paper presents a puzzling challenge to Italian lawmakers. Given that there are benefits of corruption or at least no visible negative impacts of corruption on labor productivity, it may explain why it has been difficult to garner support to fight against the issue. Culturally, as shown by \citet{zhang_changing_2015}, it may not be much of an issue for Italians to engage in corrupt activities themselves. However, it seems like most Italians are engaged in removing corruption in the government \citep{european_commission_corruption_2014}. Yet, the policy against corruption has been relatively ineffective. \citet{corrado_public_2018} find that areas that emphasize rooting out corruption less tend to have more corruption. Additionally, due to the most policies of corruption being national, such as the development of the ANAC (a national policing authority), there could be adverse effects in regional and municipal governments. \citet{woodhouse_accountability_2022} finds that when there is an increase in the indictment rate for national deputies, local corruption does increase. Given that my data is regional, but most of the Italian policies against corruption are national, the fluctuation in corruption crimes can likely be explained by a cat-and-mouse game of the national government attempting to chase new forms of corruption at the local level.
+
+
+Overall, these findings do not challenge nor support the results in other papers about Italian corruption, but rather contextualize the impact that corruption has on the economic channels that contribute to overall growth in the country. Labor productivity is shown to have direct effects on overall GDP growth per capita, which is the commonly used dependent variable in the literature about corruption and economic growth. However, this study finds that labor productivity is not a channel in which corruption negatively effects economic growth, instead having a short-run benefit. It does bring further questions to which industries could see these higher productivity gains, and why. Something like the increased environmental damage in the waste management industry from corruption could be from corrupt officials emphasizing revenues rather than environmental protection \citep{romano_environmental_2021}. Industries like waste management that are natural monopolies may also exploit higher rates and fees that taxpayers have to pay, emulating the increase in the general value added per worker. 
+
+
+
+\section*{Conclusion}
+
+%just summarize your paper, leave some final remarks to the reader and notes for next time. Two short paragraphs at most.
+
+This paper adds to the literature by investigating labor productivity as a possible channel in which corruption affects overall economic growth and well being.  Labor productivity heavily relies on managerial and worker efficiency, which may be upended by corrupt practices like nepotism. Using an ARDL model with a fixed-effects estimation, I find that there is no long-run relationship between corruption and labor productivity. However, after specifying a short-run ARDL model using the same estimator, I find that corruption has an impact on labor productivity.
+
+This impact could be explained by Italy-specific socio-cultural mechanisms, namely the sharing of compromising information. It may be that firm/organizational performance could improve due to economic actors possessing incriminating information of each other. This would allow economic transactions to occur even when the business environment may not encourage it. Another possibility is the exchange of political favors, which may also grease the wheels. However, this explanation is relatively weak due to the inefficiency that this transaction poses. For further extensions of this study, the I recommend the use of another estimator such as the system or difference GMM for better estimates. Additionally, it is imperative to engage in deeper research into the perception of corruption by Italians to develop a stronger theoretical framework behind this phenomenon.
+
+
+
+\newpage
+
+\bibliography{corruptioncitations.bib} % You just need to have it in the same folder and it will work... it's bibtex
+
+\bibliographystyle{apalike} %you have numerous options
+
+\rfoot{Phan \thepage}
+
+
+
+\newpage
+
+
+
+\section*{Appendix}
+
+
+
+	\begin{figure}[hpb] %figures are floats, so they can float past the section headers
+		\centering
+		\caption{OLS-CUSUM Test for ARDL Model}
+		\includegraphics[scale = 0.5]{CUSUM-ARDLf}
+		\label{figure:third}
+	\end{figure}
+
+	\begin{figure}[hpb]
+		\centering
+		\caption{Multiple Structural Break Test}
+		\includegraphics[scale = .5]{BIC-RSS}
+		\label{figure:fourth}
+	\end{figure}
+
+
+\begin{table}[!htbp] \centering   \caption{UECM-Fixed Effects Results}   \label{} \begin{tabular}{@{\extracolsep{5pt}}lccc} \\[-1.8ex]\hline \hline \\[-1.8ex]  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ \cline{2-4} \\[-1.8ex] & \multicolumn{3}{c}{d.loglabprod} \\  & Default & White's Robust SE & PCSE \\ \\[-1.8ex] & (1) & (2) & (3)\\ \hline \\[-1.8ex]  l.loglabprod & $-$0.645$^{***}$ & $-$0.645$^{***}$ & $-$0.645$^{***}$ \\   & (0.036) & (0.102) & (0.076) \\   & & & \\  l.corr & 0.00000 & 0.00000 & 0.00000 \\   & (0.00000) & (0.00000) & (0.00000) \\   & & & \\  l.capitalgdp & 0.175 & 0.175 & 0.175 \\   & (0.106) & (0.143) & (0.140) \\   & & & \\  l.pcteduc & $-$0.003$^{***}$ & $-$0.003$^{***}$ & $-$0.003$^{***}$ \\   & (0.0004) & (0.001) & (0.001) \\   & & & \\  d.corr & 0.00000 & 0.00000 & 0.00000 \\   & (0.00000) & (0.00000) & (0.00000) \\   & & & \\  d.capitalgdp & 0.303$^{**}$ & 0.303$^{**}$ & 0.303$^{**}$ \\   & (0.137) & (0.142) & (0.153) \\   & & & \\  d.pcteduc & $-$0.005$^{***}$ & $-$0.005$^{***}$ & $-$0.005$^{***}$ \\   & (0.0005) & (0.001) & (0.001) \\   & & & \\  dummy\_break & 0.022 & 0.022 & 0.022$^{*}$ \\   & (0.014) & (0.016) & (0.012) \\   & & & \\ \hline \\[-1.8ex] Observations & 365 & 365 & 365 \\ R$^{2}$ & 0.564 & 0.564 & 0.564 \\ Adjusted R$^{2}$ & 0.528 & 0.528 & 0.528 \\ F Statistic (df = 8; 336) & 54.377$^{***}$ & 54.377$^{***}$ & 54.377$^{***}$ \\ \hline \hline \\[-1.8ex] \textit{Note: Lost observations due to lags and differences.}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ \end{tabular} \label{table:second} \end{table} 
+
+\begin{table}[!htbp] \centering   \caption{Short-Run ARDL Fixed Effects Results}   \label{} \begin{tabular}{@{\extracolsep{5pt}}lccc} \\[-1.8ex]\hline \hline \\[-1.8ex]  & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ \cline{2-4} \\[-1.8ex] & \multicolumn{3}{c}{d.loglabprod} \\  & Default & White's Robust SE & PCSE \\ \\[-1.8ex] & (1) & (2) & (3)\\ \hline \\[-1.8ex]  diff(l.corr) & 0.00001$^{**}$ & 0.00001 & 0.00001$^{***}$ \\   & (0.00000) & (0.00001) & (0.00000) \\   & & & \\  diff(l.capitalgdp) & 0.507$^{***}$ & 0.507$^{**}$ & 0.507$^{***}$ \\   & (0.172) & (0.242) & (0.193) \\   & & & \\  diff(l.pcteduc) & $-$0.004$^{***}$ & $-$0.004$^{**}$ & $-$0.004$^{***}$ \\   & (0.001) & (0.002) & (0.001) \\   & & & \\  dummy\_break & $-$0.017 & $-$0.017 & $-$0.017 \\   & (0.020) & (0.012) & (0.034) \\   & & & \\  Constant & 0.0001 & 0.0001 & 0.0001 \\   & (0.002) & (0.001) & (0.003) \\   & & & \\ \hline \\[-1.8ex] Observations & 346 & 346 & 346 \\ R$^{2}$ & 0.146 & 0.146 & 0.146 \\ Adjusted R$^{2}$ & 0.136 & 0.136 & 0.136 \\ F Statistic & 58.358$^{***}$ & 58.358$^{***}$ & 58.358$^{***}$ \\ \hline \hline \\[-1.8ex] \textit{Note: Lost observations due to lags and differences.}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\   \\ \end{tabular} \label{table:third} \end{table} 
+
+
+
+
+
+\end{document}
