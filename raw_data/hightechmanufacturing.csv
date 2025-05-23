@@ -1,0 +1,194 @@
+TL,Territory level and Typology,REG_ID,Region,VAR,Indicator,POS,Position,TIME,Year,Unit Code,Unit,PowerCode Code,PowerCode,Reference Period Code,Reference Period,Value,Flag Codes,Flags
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,19300,B,Break
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,18600,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,19500,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,17700,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,18500,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,16900,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,17300,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,5200,B,Break
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,5800,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,5200,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,6500,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,6000,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,6200,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,5000,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,77300,B,Break
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,83600,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,73100,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,68200,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,67800,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,71900,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,69400,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,10000,B,Break
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,8000,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,6600,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,6200,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,7900,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,7400,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,8100,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,11500,B,Break
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,13700,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,9100,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,8100,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,10400,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,9200,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,7800,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,3800,B,Break
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,3400,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,3600,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,3600,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,2600,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,1700,E,Estimated value
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,2100,E,Estimated value
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,8500,B,Break
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,7800,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,7400,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,7700,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,7700,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,7300,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,9200,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,22200,B,Break
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,20600,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,25700,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,22700,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,19700,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,18100,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,19800,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,3500,B,Break
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,4400,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,5100,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,4400,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,5600,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,5000,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,4400,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,22000,B,Break
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,19100,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,21200,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,16900,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,19700,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,17700,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,22700,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,13800,B,Break
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,13500,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,16600,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,17800,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,14500,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,13800,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,14200,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,2000,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,1600,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,2500,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,2400,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,1700,E,Estimated value
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,6500,B,Break
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,6000,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,6600,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,5800,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,5800,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,6400,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,6200,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2008,2008,,,0,Units,,,29800,B,Break
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2009,2009,,,0,Units,,,36100,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2010,2010,,,0,Units,,,30300,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2011,2011,,,0,Units,,,27500,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2012,2012,,,0,Units,,,25000,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2013,2013,,,0,Units,,,27000,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2014,2014,,,0,Units,,,24300,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,19600,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,18500,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,3100,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,5200,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,70700,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,74300,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,8200,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,7500,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,7800,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,7400,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,2700,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,4100,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,7600,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,7100,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,19000,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,17400,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,2800,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,3600,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,20800,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,18700,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,14900,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,18200,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,2100,E,Estimated value
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,6300,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,6600,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2015,2015,,,0,Units,,,24300,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2016,2016,,,0,Units,,,23100,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2008,2008,,,0,Units,,,77300,B,Break
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2009,2009,,,0,Units,,,83600,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2010,2010,,,0,Units,,,73100,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2011,2011,,,0,Units,,,68200,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2012,2012,,,0,Units,,,67800,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2013,2013,,,0,Units,,,71900,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2014,2014,,,0,Units,,,69400,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2015,2015,,,0,Units,,,70700,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2016,2016,,,0,Units,,,74300,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2013,2013,,,0,Units,,,1700,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2008,2008,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2009,2009,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2010,2010,,,0,Units,,,2000,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2011,2011,,,0,Units,,,1600,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2012,2012,,,0,Units,,,2500,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2014,2014,,,0,Units,,,1700,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2015,2015,,,0,Units,,,2300,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2016,2016,,,0,Units,,,2100,E,Estimated value
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,14200,,
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,14100,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,4300,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,5100,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,69900,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,68600,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,6300,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,5200,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,8000,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,7200,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,3300,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,2100,E,Estimated value
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,7600,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,7400,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,21200,,
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,24900,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,4900,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,4600,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,16500,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,19800,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,19100,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,20600,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,2200,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,1800,E,Estimated value
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,4000,,
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,5300,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2017,2017,,,0,Units,,,24100,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2018,2018,,,0,Units,,,23400,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2017,2017,,,0,Units,,,69900,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2018,2018,,,0,Units,,,68600,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2017,2017,,,0,Units,,,2200,E,Estimated value
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2018,2018,,,0,Units,,,1800,E,Estimated value
+2,Large regions (TL2),ITC1,Piedmont,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,19600,,
+2,Large regions (TL2),ITC3,Liguria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,5600,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,77500,,
+2,Large regions (TL2),ITF1,Abruzzo,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,5700,,
+2,Large regions (TL2),ITF3,Campania,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,9400,,
+2,Large regions (TL2),ITF4,Apulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,3000,,
+2,Large regions (TL2),ITG1,Sicily,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,8900,,
+2,Large regions (TL2),ITG2,Sardinia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,1600,E,Estimated value
+2,Large regions (TL2),ITH3,Veneto,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,18100,,
+2,Large regions (TL2),ITH4,Friuli-Venezia Giulia,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,4800,,
+2,Large regions (TL2),ITH5,Emilia-Romagna,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,24500,,
+2,Large regions (TL2),ITI1,Tuscany,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,19600,,
+2,Large regions (TL2),ITI2,Umbria,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,1800,E,Estimated value
+2,Large regions (TL2),ITI3,Marche,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,5700,,
+2,Large regions (TL2),ITI4,Lazio,HT_MG_EMP_T,Employment in high-technology manufacturing,ALL,All regions,2019,2019,,,0,Units,,,25300,,
+2,Large regions (TL2),ITC4,Lombardy,HT_MG_EMP_T,Employment in high-technology manufacturing,MAX,Highest regional value in the country by Territorial Level and selected indicators,2019,2019,,,0,Units,,,77500,,
+2,Large regions (TL2),ITG2,Sardinia,HT_MG_EMP_T,Employment in high-technology manufacturing,MIN,Lowest regional value in the country by Territorial Level and selected indicators,2019,2019,,,0,Units,,,1600,E,Estimated value
