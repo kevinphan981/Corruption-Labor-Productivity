@@ -1,0 +1,1134 @@
+---
+title: "Italy Corruption ARDL"
+author: "Kevin Phan"
+date: "2023-06-09"
+output: html_document
+---
+
+https://ec.europa.eu/eurostat/documents/1978984/6037342/Comparability_ISCED_2011_ISCED_1997.pdf
+https://ec.europa.eu/eurostat/web/nuts/history
+https://en.wikipedia.org/wiki/NUTS_statistical_regions_of_Italy
+https://blog.eviews.com/2017/05/autoregressive-distributed-lag-ardl.html
+https://www.rdocumentation.org/packages/ARDL/versions/0.2.3
+
+
+There are packages spread throughout the code, but there are some fundamental ones here.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyr)
+library(dplyr)
+library(readxl)
+library(ggplot2)
+library(readr)
+library(devtools)
+library(tseries)
+library(dLagM)
+library(urca)
+library(dynlm)
+library(stats)
+library(zoo)
+library(mice)
+library(ARDL)
+library(jtools)
+library(stargazer)
+library(dLagM)
+library(mvtnorm)
+
+```
+
+```{r}
+
+crime <- read_csv("2000-2017end.csv")
+
+head(crime)
+
+crime <- crime %>%
+  filter(Gender == "total")
+
+
+crime <- crime %>%
+  select("Territory", "Type of crime", "TIME", "Value")
+
+crime <- crime %>%
+  arrange("TIME")
+
+select_data <- crime %>%
+  filter(!(Territory == "Italy")) #getting rid of italy stats
+
+select_data <- select_data %>%
+  filter(!(`Type of crime` == "mafia-style or organized crime associations"))
+
+mafia_data <- crime %>%
+  filter(!(Territory == "Italy")) %>%
+  filter(`Type of crime` == "mafia-style or organized crime associations") %>%
+  select(Territory, TIME, Value) %>%
+  group_by(Territory, TIME) %>%
+  dplyr::summarize(Value = sum(Value))
+
+select_data <- select_data %>% 
+  select(Territory, TIME, Value) %>%
+  group_by(Territory, TIME) %>%
+  dplyr::summarize(Value = sum(Value))
+
+select_data %>%
+  rename("corr" = "Value") -> select_data
+
+
+adf.test(select_data$corr) #it's stationary
+
+gvaperworker <- read.csv("laborprodUSD2015.csv")
+
+
+gvaperworker <- gvaperworker%>%
+  filter(!(Region == "Italy")) %>%
+  select("REG_ID","Region", "TIME", "Value")
+
+adf.test(gvaperworker$Value) #also stationary.
+
+gvaperworker <- gvaperworker %>%
+  rename("Territory" = "Region") %>%
+  rename("labprod" = "Value")
+  
+
+gdpgeneral <- read.csv("italygdp.csv")
+
+gdpgeneral <- gdpgeneral %>%
+  rename("Territory" = "Region")
+
+gdpgeneral <- gdpgeneral %>%
+  filter(!(Territory == "Italy")) %>%
+  dplyr::select(Territory, TIME, Value)
+
+
+gdpgeneral <- gdpgeneral %>%
+  rename("gdp" = "Value")
+
+#I have to rename all of the provinces from English to Italian
+
+```
+
+```{r}
+
+#continuing with inserting more data for controls...
+
+#in order, 1, 2, 3, 4, 5, 6
+
+popdata <- read.csv("avgpopoecd.csv")
+hightech <- read.csv("hightechmanufacturing.csv") # too little...?
+rdexpend <- read.csv("rdexpend.csv") # this is in 2010 dollars, which I have converted... I think. I need Azenui to check this...
+physcapital <- read.csv("grosscapitalformation.csv")
+govtexpend <- read.csv("govtexpenditure.csv") # as a reminder, this data is in 2015 euros...
+education <- read.csv("education.csv") # will have to do again...
+
+exchangerates <- read.csv("exchangeratesWDI.csv")
+cpigdp2010 <- read.csv("cpigdp2010GEM.csv")
+
+#current is nominal, constant is real. So use current prices with the conversion to make it right.
+#divide the nominal by the infl rate to get the real... so then how would that make that real?
+#find an official exchange rate from euros/usd divide it yearly...
+
+```
+
+```{r}
+#cleaning up the exchange rate data...
+
+data.frame(t(exchangerates)) -> exchangerates_t
+
+exchangerates_t1 <- exchangerates_t %>%
+  rename("italyDEC" = "X1",
+         "usaDEC" = "X2")
+
+exchangerates_t1 <- exchangerates_t1 %>%
+  rename("off_italy" = "X3",
+         "off_US" = "X4")
+
+exchangerates_t1 <- exchangerates_t1 %>%
+  dplyr::select(italyDEC, usaDEC, off_italy, off_US)
+
+exchangerates_t1 <- exchangerates_t1[-c(1,2,3,4),]
+
+exchangerates_t1 <- exchangerates_t1 %>%
+  mutate(TIME = (c("2000", "2001", "2002", "2003", "2004", "2005",
+                          "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013",
+                          "2014", "2015", "2016", "2017")))
+exchangerates_t1 <- exchangerates_t1 %>%
+  mutate(italyDEC = as.numeric(italyDEC),
+         usaDEC = as.numeric(usaDEC),
+         off_italy = as.numeric(off_italy),
+         off_US = as.numeric(off_US),
+         TIME = as.integer(TIME))
+
+
+```
+
+```{r}
+#cleaning CPI and gdp data... (do I really need? I just need the basket...)
+
+head(cpigdp2010)
+
+cpigdp2010 <- cpigdp2010[c(1,11),]
+
+cpigdp2010_t <- data.frame(t(cpigdp2010))
+
+cpigdp2010_t <- cpigdp2010_t %>% #do remember that the data is seasonally adjusted.
+  rename("italycpi2010" = "X1",
+         "uscpi2010" = "X11")
+
+cpigdp2010_t <- cpigdp2010_t[-c(1,2,3,4),]
+
+cpigdp2010_t <- cpigdp2010_t %>%
+  mutate(TIME = (c(2000, 2001, 2002, 2003, 2004, 2005,
+                          2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013,
+                          2014, 2015, 2016, 2017)))
+
+cpigdp2010_t <- cpigdp2010_t %>%
+  mutate(italycpi2010 = as.numeric(italycpi2010),
+         uscpi2010 = as.numeric(uscpi2010),
+         TIME = as.integer(TIME))
+
+
+cpiboth <- cpigdp2010_t %>%
+  mutate(italycpi2015 = 100*italycpi2010/italycpi2010[16], #rebased as well.
+         uscpi2015 = 100*uscpi2010/uscpi2010[16], 
+         )
+
+
+currencycleaner <- left_join(cpiboth, exchangerates_t1, by = "TIME")
+
+
+```
+
+
+
+```{r}
+popdata %>%
+  select(REG_ID, Region, TIME, Value) %>%
+  rename("pop" = "Value") -> popdata
+
+popdata %>%
+  filter(!(Region == "Italy"),
+         TIME < 2018)
+
+popdata %>%
+  group_by(REG_ID, TIME) -> popdata
+
+govtexpend <- govtexpend %>%
+  rename("REG_ID" = "REF_AREA",
+         "govt" = "OBS_VALUE")
+
+govtexpend <- govtexpend %>%
+  rename("TIME" = "TIME_PERIOD")
+
+govtexpend <- govtexpend %>%
+  group_by(REG_ID, TIME) %>%
+  dplyr::summarize(govt = sum(govt))
+
+govtexpend <- govtexpend %>%
+  filter(TIME < 2018) %>%
+  filter(!(REG_ID == "ITZ")) #IT'S USING THE OLD NUTS NOMENCLATURE, I HAVE TO UPDATE IT
+
+govtexpend <- govtexpend %>%
+  filter(!(REG_ID == "ITA"))
+
+#govtexpend <- govtexpend %>% 
+  #mutate(govt = govt*1.35374052043) # this is based on the World Bank PPP conversion rate from euros to USD 2015... I'm assuming if it's all chain linked in 2015 euro, it can easily be converted to USD. This is easily wrong.
+
+#https://en.wikipedia.org/wiki/NUTS_statistical_regions_of_Italy#cite_note-1:~:text=The%20following%20codes,divisions%20of%20ITG2.
+
+govtexpend[govtexpend$REG_ID == "ITD", "REG_ID"] = "ITH"
+govtexpend[govtexpend$REG_ID == "ITD1", "REG_ID"] = "ITH1"
+govtexpend[govtexpend$REG_ID == "ITD2", "REG_ID"] = "ITH2"
+govtexpend[govtexpend$REG_ID == "ITD3", "REG_ID"] = "ITH3"
+govtexpend[govtexpend$REG_ID == "ITD4", "REG_ID"] = "ITH4"
+govtexpend[govtexpend$REG_ID == "ITD5", "REG_ID"] = "ITH5"
+govtexpend[govtexpend$REG_ID == "ITE", "REG_ID"] = "ITI"
+govtexpend[govtexpend$REG_ID == "ITE1", "REG_ID"] = "ITI1"
+govtexpend[govtexpend$REG_ID == "ITE2", "REG_ID"] = "ITI2"
+govtexpend[govtexpend$REG_ID == "ITE3", "REG_ID"] = "ITI3"
+govtexpend[govtexpend$REG_ID == "ITE4", "REG_ID"] = "ITI4"
+
+merge_one <- left_join(popdata, govtexpend, by = c("REG_ID", "TIME"))
+
+merge_one <- merge_one %>%
+  filter(!is.na(govt))
+
+## NOW TIME FOR EDUCATION
+
+library(imputeTS)
+
+education <- education %>%
+  filter(TIME < 2018) %>%
+  dplyr::select(REG_ID, Region, ISC11, Education.ISCED.level, TIME, Value)
+
+education <- education %>%
+  rename("pcteduc" = "Value")
+
+table(education$ISC11)
+table(education$Education.ISCED.level) # we're going to keep L5T8, which is total tertiary...
+
+education <- education %>%
+  arrange(REG_ID, TIME, ISC11)
+
+education1 <- education %>%
+  filter(ISC11 == "L5T8") %>%
+  arrange(REG_ID, TIME) 
+
+education_1 <- education1 %>%
+  group_by(REG_ID, TIME) %>%
+  dplyr::summarise(pcteduc = mean(pcteduc, na.rm = T)) 
+
+table(is.na(education_1$pcteduc))
+
+education_1 %>%
+  filter(REG_ID == "ITI2")
+
+#theres multiple of the same observation because of the data in oecdstat!
+
+
+#PHYSICAL CAPITAL, USES THE OLD NOMENCLATURE...
+
+physcapital <- physcapital %>%
+  mutate(Value = as.numeric(Value)) %>%
+  rename("capital" = "Value") 
+
+
+physcapital <- physcapital %>%
+  filter(Breakdown.by.industry..NACE.Rev2. == "total economic activities",
+         Non.financial.assets == "total fixed assets by type of asset")
+
+physcapital <- physcapital %>%
+  dplyr::select(ITTER107, Territory, TIME, capital) 
+
+physcapital <- physcapital %>%
+  group_by(ITTER107, TIME)
+
+physcapital <- physcapital %>%
+  rename("REG_ID" = "ITTER107")
+
+physcapital <- physcapital %>%
+  group_by(REG_ID, TIME) %>%
+  dplyr::summarise(capital = mean(capital))
+
+physcapital[physcapital$REG_ID == "ITD", "REG_ID"] = "ITH"
+physcapital[physcapital$REG_ID == "ITD1", "REG_ID"] = "ITH1"
+physcapital[physcapital$REG_ID == "ITD2", "REG_ID"] = "ITH2"
+physcapital[physcapital$REG_ID == "ITD3", "REG_ID"] = "ITH3"
+physcapital[physcapital$REG_ID == "ITD4", "REG_ID"] = "ITH4"
+physcapital[physcapital$REG_ID == "ITD5", "REG_ID"] = "ITH5"
+physcapital[physcapital$REG_ID == "ITE", "REG_ID"] = "ITI"
+physcapital[physcapital$REG_ID == "ITE1", "REG_ID"] = "ITI1"
+physcapital[physcapital$REG_ID == "ITE2", "REG_ID"] = "ITI2"
+physcapital[physcapital$REG_ID == "ITE3", "REG_ID"] = "ITI3"
+physcapital[physcapital$REG_ID == "ITE4", "REG_ID"] = "ITI4"
+
+
+##### converting every value into the proper thing: constatn 2015 USD, this is 2015 euros...
+
+
+physcapital <- left_join(physcapital, currencycleaner, by = "TIME")
+
+physcapital %>%
+  arrange(TIME) %>%
+  mutate(capital = capital*italycpi2015/100) -> physcapital #make the capital current in euros 
+
+physcapital %>%
+  arrange(TIME) %>%
+  mutate(capital = capital/off_italy) #converts to USD
+
+physcapital %>%
+  arrange(TIME) %>%
+  mutate(capital = capital*100/uscpi2015)
+
+
+
+merge_two <- left_join(merge_one, physcapital, by = c("REG_ID", "TIME"))
+
+## time for R&d EXPENDITURE
+
+rdexpend %>%
+  dplyr::select(REG_ID, TIME, NewValue) -> rdexpend
+
+rdexpend %>%
+  rename("rdexpend" = "NewValue") -> rdexpend
+
+merge_three <- left_join(merge_two, rdexpend, by = c("REG_ID", "TIME"))
+
+
+```
+
+#for the sake of the exercise, I will use education_1 in order to see what kind of results that I can get.
+```{r}
+
+merge_four <- left_join(merge_three, education_1, by = c("REG_ID", "TIME"))
+merge_four <- left_join(merge_four, gvaperworker, by = c("REG_ID", "TIME"))
+merge_four <- left_join(merge_four, gdpgeneral, by = c("Territory", "TIME"))
+
+merge_four <- merge_four %>%
+  select(!(Region))
+
+merge_four <- merge_four %>%
+  dplyr::select(REG_ID, Territory, TIME, pop, govt, capital, rdexpend, pcteduc, labprod, gdp) %>%
+  group_by(REG_ID, TIME) %>%
+  mutate(gdppercap = gdp*1000000/pop) # based on the actual figures from wikipedia, I think I got it wrong...
+
+
+```
+
+
+# the creation of "ultdata"
+
+I must rename the region names due to it all being anglicised. Once I have the final data set that I cna merge with the crime one, then I'll be set. 
+```{r}
+
+#i was renaming things, but I will rename just the last one
+merge_four[merge_four$Territory == "Piedmont", "Territory"] = "Piemonte"
+merge_four[merge_four$Territory == "Sicily", "Territory"] = "Sicilia"
+merge_four[merge_four$Territory == "Aosta Valley", "Territory"] = "Valle d'Aosta / Vallée d'Aoste"
+merge_four[merge_four$Territory == "Liguria", "Territory"] = "Liguria"
+merge_four[merge_four$Territory == "Lombardy", "Territory"] = "Lombardia"
+merge_four[merge_four$Territory == "Abruzzo", "Territory"] = "Abruzzo"
+merge_four[merge_four$Territory == "Molise", "Territory"] = "Molise"
+merge_four[merge_four$Territory == "Campania", "Territory"] = "Campania"
+merge_four[merge_four$Territory == "Apulia", "Territory"] = "Puglia"
+merge_four[merge_four$Territory == "Basilicata", "Territory"] = "Basilicata"
+merge_four[merge_four$Territory == "Calabria", "Territory"] = "Calabria"
+merge_four[merge_four$Territory == "Sardinia", "Territory"] = "Sardegna"
+merge_four[merge_four$Territory == "Province of Bolzano-Bozen", "Territory"] = "Provincia Autonoma Bolzano / Bozen"
+merge_four[merge_four$Territory == "Province of Trento", "Territory"] = "Provincia Autonoma Trento"
+merge_four[merge_four$Territory == "Veneto", "Territory"] = "Veneto"
+merge_four[merge_four$Territory == "Friuli-Venezia Giulia", "Territory"] = "Friuli-Venezia Giulia"
+merge_four[merge_four$Territory == "Emilia-Romagna", "Territory"] = "Emilia-Romagna"
+merge_four[merge_four$Territory == "Tuscany", "Territory"] = "Toscana"
+merge_four[merge_four$Territory == "Umbria", "Territory"] = "Umbria"
+merge_four[merge_four$Territory == "Marche", "Territory"] = "Marche"
+merge_four[merge_four$Territory == "Lazio", "Territory"] = "Lazio"
+
+
+ultdata <- left_join(merge_four, select_data, by = c("Territory", "TIME"))
+
+#colnames(ultdata)[3] ="corr"
+
+ultdata <- ultdata %>%
+  group_by(REG_ID, TIME) %>%
+  mutate(corrper = corr/pop,
+         capitalgdp = capital/gdp)
+
+mafia_data <- mafia_data %>% dplyr::mutate(TIME = as.Date(as.Date(as.yearmon(TIME) + 11/12, frac = 1)))
+mafia_data <- mafia_data %>% rename("mafia" = "Value")
+
+ultdata <- ultdata %>%
+  dplyr::mutate(TIME = as.Date(as.Date(as.yearmon(TIME) + 11/12, frac = 1))) %>% 
+  dplyr::arrange(REG_ID, TIME)
+
+ultdata <- left_join(ultdata, mafia_data, by = c("Territory", "TIME"))
+
+
+
+library(zoo)
+# end of year
+
+```
+
+#Missing Data
+This is somehow becoming my largest issue. We will see how I can solve it. I will have to do this piece by piece. Somehow two data sets have stalled my progress. I have to see if it is MAR, then go accordingly. I have used ultdata1 as a dataset that has removed these missing observations. Overall, I only lose about 4% of the original. 
+```{r}
+
+ult_rdna <- ultdata %>%
+  filter(is.na(rdexpend))
+
+ult_edna <- ultdata %>%
+  filter(is.na(pcteduc))
+
+#one by one...
+
+ultdata %>%
+  filter(REG_ID == "ITF2") %>%
+  dplyr::select(REG_ID, TIME, rdexpend) %>%
+  na_locf(., option = "nocb", na_remaining = "rev", maxgap = Inf) #it worked???
+
+
+ultdata %>%
+  filter(REG_ID == "ITF2") %>%
+  na_locf(., option = "nocb", na_remaining = "rev", maxgap = Inf)
+
+rdtestset <- ultdata %>%
+  na_locf(., option = "nocb", na_remaining = "rev", maxgap = Inf)
+
+rdtestset1 <- ultdata %>%
+  group_by(Territory) %>%
+  na_mean(., option = "mean", maxgap = Inf)
+  
+ggplot_na_distribution(rdtestset1$rdexpend)
+
+ultdata %>%
+  group_by(Territory) %>%
+  na_mean(., option = "mean", maxgap = Inf) -> rdtestset2
+
+
+#here we go
+
+ultdata <- ultdata %>%
+  group_by(Territory) %>%
+  na_locf(., option = "nocb", na_remaining = "rev", maxgap = Inf)
+
+table(is.na(ultdata$rdexpend))
+
+
+
+
+```
+
+
+
+
+```{r, include = FALSE, echo = FALSE}
+
+#this section has no hope...
+
+
+rdfix <- ultdata %>%
+  dplyr::select(REG_ID, TIME, rdexpend) %>%
+  arrange(REG_ID)
+
+rdfix <- rdfix %>%
+  fill(rdexpend, .direction = 'down')
+#ITF2 2015 is NA in the original, it seems like 2015 and 2016 are the most common years...
+
+rdfix %>%
+  filter(REG_ID == "ITF2")
+
+rdfix %>%
+  filter(TIME == 2016)
+
+rdfix1 <- rdfix %>% 
+  select(TIME, REG_ID, rdexpend) %>% 
+  arrange(TIME)
+
+
+
+rdfix1 <- ts(rdfix1)
+rdfix1 <-  na_locf(rdexpend, option = "nocb", na_remaining = "rev", maxgap = Inf) #nope
+
+
+ggplot_na_distribution(rdfix1$rdexpend)
+
+
+#https://www.rdocumentation.org/packages/imputeTS/versions/3.1/topics/na_locf
+table(is.na(rdfix))
+
+# ITF5 2016 is NA, and it seems to be fixed...
+
+educfix <- ultdata %>%
+  dplyr::select(REG_ID, TIME, pcteduc) %>%
+  arrange(REG_ID)
+
+educfix <- na_locf(education_1, option = "nocb", na_remaining = "rev", maxgap = Inf)
+
+education_1 %>%
+  filter(REG_ID == "ITH2")
+
+educfix %>%
+  filter(REG_ID == "ITH2")
+
+#educfix1 <- na_locf(educfix0.5, option = "nocb", na_remaining = "rev", maxgap = 4)
+#educfix2 <- na_mean(educfix0.5, option = "mean")
+
+table(is.na(educfix$rdexpend))
+
+ggplot_na_distribution(educfix$pcteduc)
+ggplot_na_distribution(rdfix$rdexpend)
+
+
+
+```
+
+
+# Structural Breaks?
+
+```{r}
+ggplot(ultdata) +
+  aes(x = TIME, y = labprod, colour = Territory) +
+  geom_point(size = 1) +
+  geom_line()
+
+ggplot(ultdata) + 
+  aes(x = TIME, y = corrper, colour = Territory) +
+  geom_point(size = 1) +
+  geom_line()
+
+ggplot(ultdata) +
+  aes(x = corr, y = labprod) +
+  geom_point(size = 1)
+```
+
+#Tests & Lag Selection
+```{r}
+library(aTSA)
+
+ultdata %>%
+  na.omit(pcteduc, rdexpend) %>%
+  mutate(corrper = as.integer(corrper),
+         govt = as.integer(govt),
+         capital = as.integer(capital),
+         pcteduc = as.integer(pcteduc),
+         rdexpend = as.integer(rdexpend)) -> ultdata1
+
+ultdata1 %>%
+  filter(!(REG_ID == "ITC2")) -> ultdata1
+
+ultdata1 <- ultdata %>%
+  mutate(loglabprod = log(labprod),
+         labprodsq = labprod^2,
+         sqrtlabprod = sqrt(labprod)) %>%
+  mutate(decimaleduc = pcteduc/100) %>%
+  mutate(rdexpendgdp = rdexpend/gdp) %>%
+  mutate(govtgdp = govt/gdp) %>%
+  mutate(corrmill = as.numeric(corr)/1000000)
+
+
+
+attach(ultdata1) # I will have to fix the missing data issue later.
+
+#independent variables
+adf.test(corr) 
+adf.test(corrper) #this means that it is stationary at I(0)...
+dcorrper <- diff(corrper)
+adf.test(dcorrper) #this is if I difference it, which makes it I(1)
+adf.test(corrmill) #stationary at I(0)
+
+adf.test(govt) #very stationary at I(0)
+adf.test(capital) #stationary at I(0)
+adf.test(capitalgdp) 
+adf.test(diff(capitalgdp)) #stationary at I(1)
+adf.test(ultdata$rdexpend) #stationary.
+adf.test(pcteduc) # this has to be differenced.
+
+#dependent variables
+dlabprod <- diff(labprod)
+adf.test(dlabprod) #it's stationary at I(1), I took the diff of the original...
+adf.test(gdppercap)
+
+#further checks
+kpss.test(ultdata$corr)
+kpss.test(ultdata$corrper)
+kpss.test(dcorrper)
+kpss.test(ultdata$labprod) #it works here...
+kpss.test(ultdata$gdp) #it's not stationary at all
+
+dgdp <- diff(gdp)
+kpss.test(dgdp) # still not stationary...?
+adf.test(dgdp) #it works here...
+
+
+# Optimal Lag Selection
+
+library(vars)
+
+indptvariables <- data.frame(ultdata1$corr, ultdata1$capitalgdp, ultdata1$rdexpend)
+
+VARselect(indptvariables) #if I remove the NAs, it is 2
+#I'll just do it independently
+
+VARselect(corrper) #1, 2 sometimes
+VARselect(corr) #3
+VARselect(govt) #2
+VARselect(capital) #2
+VARselect(pcteduc) #3?
+#VARselect(rdexpend) #2
+
+
+VARselect(labprod) # it's one
+VARselect(gdppercap) # it's six...
+
+
+#Using autoardl
+
+AICtest <- auto_ardl(loglabprod ~ corr + capitalgdp + pcteduc, data = ultdata1, max_order = 2)
+AICtest$top_orders # all ones...
+
+AICtest0 <- auto_ardl(loglabprod ~ corrmill + capitalgdp + pcteduc, data = ultdata1, max_order = 2)
+AICtest0$top_orders
+
+AICtest1 <- auto_ardl(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + rdexpend + pop, data = ultdata1, max_order = 2)
+AICtest1$top_orders
+
+
+AICtest2 <- auto_ardl(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + mafia, data = ultdata1, max_order = 2)
+AICtest2$top_orders # so my ivreg model is using the best ARDL lags possible.
+
+AICtest3 <- auto_ardl(loglabprod ~ corr + capitalgdp + pcteduc, data = ultdata1.pd, max_order = 2)
+AICtest3$top_orders 
+```
+
+# The Model(s)
+```{r}
+
+model <- ardl(loglabprod ~ corr + capitalgdp + pcteduc, data = ultdata1, order = c(1,2,2,1)) #was sqrt
+model_ones <- ardl(loglabprod ~ corr + capitalgdp + pcteduc, data = ultdata1, order = c(1,1,1,1))
+model_2 <- ardl(loglabprod ~ corrmill + capitalgdp + pcteduc, data = ultdata1, order = c(1,1,1,1))
+model_3 <- ardl(loglabprod ~ corrmill + capitalgdp + decimaleduc, data = ultdata1, order = c(1,1,1,1))
+model_pd <- ardl(loglabprod ~ corr + capitalgdp + pcteduc, data = ultdata1, order = c(1,1,1,1))
+
+# wt <- 1/lm(abs(lm_model$residuals)~lm_model$fitted.values)$fitted.values^2 #this is the weight, if you do it with the lm-ized model, then it will be good. If not, then it is not great at all.
+
+# model_b <- dynlm(model$full_formula, data = model$data, weights = wt)
+
+#model_2 <- ardl(loglabprod ~ corr, data = ultdata1, order = c(1,2))
+
+summary(model)
+summary(model_ones)
+summary(model_2)
+summary(model_3)
+summary(model_pd)
+
+#ADF on model residuals... for unit roots? I have no idea...
+summary(ur.df(model$residuals))
+summary(ur.df(model_ones$residuals))
+summary(ur.df(model_2$residuals))
+summary(ur.df(model_3$residuals))
+
+```
+
+## Model Autocorrelation
+
+One of the fundamental assumptions in the ARDL model is that the residuals are serially independent. This means that they are not correlated. We can verify this assumption through numerous ways, and I use three in order to make sure that this is the case. The first is plotting it, the second is the Durbin-Watson test, and the third is the Breush-Godfrey test. All demonstrate that the residuals are serially independent. 
+
+```{r}
+#this is to test for autocorrelation
+#once again, testing for autocorrelation
+
+acf(model$residuals, type = "correlation") # this is ok
+acf(model_ones$residuals, type = "correlation") 
+acf(model_2$residuals, type = "correlation") 
+acf(model_3$residuals, type = "correlation")
+library(lmtest)
+
+lmtest::dwtest(model)# null is uncorrelated residuals.
+dwtest(model_ones)
+dwtest(model_2)
+dwtest(model_3)
+
+bgtest(model)
+bgtest(model_ones)
+bgtest(model_2)
+bgtest(model_3)
+```
+
+## Multicollinearity & Heteroskedasticity Concerns
+
+Multicollinearity affects the estimates of the model, and has to be resolved in order to produce unbiased estimates. Thankfully, there is no multicollinearity in my models (as of this statement, 6/22/23). I am also testing for heteroskedasticity, as it does impact the bounds testing that I will implement in the future. It does not affect the estimates because of the fact that OLS is unbiased. However, it means that the estimator is not the best for the model. 
+
+```{r}
+
+#this is a test for multicollinearity
+library(car)
+vif(model) 
+vif(model_ones)
+vif(model_2)
+vif(model_3)
+
+#rule of thumb is that if the value is over 10, it's going to be a problem.
+#https://easystats.github.io/performance/reference/check_collinearity.html#:~:text=A%20VIF%20less%20than%205,model%20predictors%20(James%20et%20al.
+ 
+#here is a test for heteroskedasticity
+bptest(model) # there is heteroskedasticity in the model
+bptest(model_ones, studentize = T)
+bptest(model_2)
+bptest(model_3)
+
+
+ggplot(data = model) +
+  aes(x = loglabprod, y = residuals(model)) +
+  geom_point(col = 'grey') +
+  geom_abline(slope = 0)
+
+```
+
+# Solving Heteroskedasticity
+
+This is really just for me to discover and play around with the covariance matrices. Nothing more, nothing less. The vcov matrix is really only applicable for the UECM model, so I don't understand why it is there in the first place. 
+
+```{r}
+#oh this is going to hurt...
+
+vcovHAC(model, type = "HAC", diagnostics = TRUE)
+
+#coefficient testing... even though OLS shouldn't affect it...
+
+library(sandwich)
+coeftest(model, vcov = vcovHC(model, type = 'HC0')) # yeah.. that seems to be the deciding factor.
+coeftest(model_ones, vcov = vcovHC(model, type = 'HC0'))
+coeftest(model_2, vcov = vcovHC(model, type = 'HC0'))
+```
+
+# Estimating Long-run and Short-run effects using UECM & RECM
+
+I will have to explain what the UECM and RECM is, but that is for later.
+```{r}
+
+uecm_model <- uecm(model, case = 2)
+summary(uecm_model)
+
+recm_model <- ARDL::recm(uecm_model, case = 2)
+summary(recm_model)
+#https://www.youtube.com/watch?v=GEywXbnIIqk
+
+
+c2_ardl <- coint_eq(model, case = 2)
+#this is the uecm model that we will be using according to dave giles' method, however it can't be used at all.
+c2_uecm <- coint_eq(uecm_model, case = 2)
+c2_recm <- coint_eq(recm_model)
+
+#ect value is too low (needs to be more negative), and needs to be more significant
+
+
+
+multipliers(model, type = "lr", vcov_matrix = vcovHC(model, type = "HC0")) #for the long run equation
+multipliers(model, type = "sr", vcov_matrix = vcovHC(model, type = "HC0")) # for the short run equation
+
+```
+
+# Bounds Testing for Cointegration
+```{r, include = FALSE, echo = FALSE}
+#cointegration
+
+#is this even the right way to go about this???
+
+coint.test(ultdata$labprod, ultdata$corr) #engle granger 
+# I can reject that there is no trend at a 5% confidence interval.
+
+coint.test(ultdata$labprod, ultdata$corrper, d = 1) # I think I have to do the first order, or else it won't work...
+
+#johansen test
+jotest1 <- ca.jo(data.frame(ultdata$corr, ultdata$labprod), type = "trace", K = 2, ecdet="none", spec="longrun")
+
+summary(jotest1)
+
+jotest1.1 <- ca.jo(data.frame(ultdata$labprod, ultdata$corr), type = "trace", K = 2, ecdet="none", spec="longrun")
+
+summary(jotest1.1)
+
+jotest2 <- ca.jo(data.frame(ultdata$corr, ultdata$capital, ultdata$rdexpend, ultdata$pcteduc, ultdata$govt, ultdata$labprod), type = "trace", K = 2, ecdet = "none", spec = "longrun")
+
+summary(jotest2)
+
+jotest3 <- ca.jo(data.frame(ultdata1$corr, ultdata1$capital, ultdata1$rdexpend, ultdata1$pcteduc, ultdata1$govt, ultdata1$labprod), type = "trace", K = 2, ecdet = "none", spec = "longrun")
+
+summary(jotest3)
+```
+
+Ignoring the part above, we have the bounds-testing for the ARDL models...
+
+```{r}
+#Bounds testing Peseran Shin
+bounds_f_test(model, case = 3) #p-value too large
+bounds_f_test(model, case = 3, alpha = 0.01, vcov_matrix = vcovHC(model, type = "HC0")) #yeah still doesn't work
+bounds_f_test(model, case = 2, alpha = 0.01, vcov_matrix = vcovHC(model, type = "HC0")) #nope
+bounds_t_test(model, case = 3, alpha = .01, vcov_matrix = vcovHC(model, type = "HC0"))
+
+bounds_f_test(model_ones, case = 2, alpha = 0.01, vcov_matrix = vcovHC(model_ones, type = "HC0"))
+bounds_f_test(model_ones, case = 3, alpha = 0.01, vcov_matrix = vcovHC(model_ones, type = "HC0"))
+bounds_t_test(model_ones, case = 3, alpha = 0.01, vcov_matrix = vcovHC(model_ones, type = "HC0"))
+
+bounds_f_test(model_2, case = 2, alpha = 0.01)
+bounds_f_test(model_2, case = 3, alpha = 0.01)
+bounds_t_test(model_2, case = 3, alpha = 0.01) # nope, not at all.
+```
+
+## UECM, RECM Bounds-Testing
+
+There is no methodological reason to do this, which is why I have ignored it for now. I don't really want to rely on this, because it is so suspect and wrong that I won't forgive myself if I reported these numbers. 
+
+```{r}
+#UECM
+
+bounds_f_test(uecm_model, case = 2, alpha = .01, vcov_matrix = vcovHAC(model, type = "HAC")) #this p-value is really small...
+
+bounds_f_test(uecm_model, case = 3, alpha = .01, vcov_matrix = vcovHC(model, type = "HC0")) # again, small, even with a different robust standard errors estimation...
+
+bounds_t_test(uecm_model, case = 3, alpha = .01, vcov_matrix = vcovHC(model, type = "HC0"))
+
+bounds_f_test(uecm_model, case = 3, alpha = .01, vcov_matrix = vcovHC(uecm_model, type = 'HC0'))
+
+# using the recm and HC of just "model" doesn't work
+
+bounds_f_test(recm_model, case = 2, alpha = .01, vcov_matrix = vcovHC(recm_model, type = "HC0")) #this is the RECM model... it's barely not confident at 5%
+
+# dont' work - bounds_t_test(recm_model, case = 3, alpha = .01, vcov_matrix = vcovHC(recm_model, type = "HC0")) 
+
+
+#https://onlinelibrary.wiley.com/doi/full/10.1002/jae.616
+```
+
+
+The five cases
+https://www.rdocumentation.org/packages/ARDL/versions/0.1.1/topics/bounds_f_test    
+
+#Kurtosis/Normality Test of Residuals
+```{r}
+
+#normality/kurtosis test
+shapiro.test(model$residuals)
+jarque.bera.test(model$residuals)
+
+plot(model$residuals)
+hist(model$residuals)
+#https://www.statology.org/how-to-conduct-a-jarque-bera-test-in-r/
+
+```
+
+
+```{r}
+formula <- loglabprod ~ corr + capitalgdp + pcteduc
+
+ardl1 <- ardlBound(data = ultdata1, formula = formula, case = 3, max.p = 3, max.q = 3)
+```
+
+Linearizing my results...
+```{r}
+
+summ(model)
+
+lm_model <- to_lm(model)
+summary(lm_model)
+
+ur.df(lm_model$residuals)
+lmtest::dwtest(lm_model)
+bptest(lm_model) # still fails
+
+uecm_lm <- to_lm(uecm_model)
+summary(uecm_lm)
+
+recm_lm <- to_lm(recm_model)
+summary(recm_lm)
+#https://www.youtube.com/watch?v=GEywXbnIIqk
+
+
+```
+
+# Fixed vs. Random Effects Models
+Overall, it seems like both aren't very strong in actually determining the effects. This is probably because these are static models, while I probably need something that is dynamic.
+
+```{r}
+
+# I try LSDV or fixed effects... and random, then I choose based on ph test/hausman.
+library(plm)
+ultdata1.pd <- pdata.frame(ultdata1, index = c("Territory", "TIME"), drop.index = FALSE)
+pdim(ultdata1.pd) #says its balanced.
+#https://www.youtube.com/watch?v=ECdOn4TJi2M, based on this, if T < 25, and N > 25, one should do a GMM estimator...?
+
+fixed <- plm(formula, data = ultdata1.pd, index = c("Territory", "TIME"), model = "within")
+random <- plm(formula, data = ultdata1.pd, index = c("Territory", "TIME"), model = "random")
+phtest(fixed, random) #because the p-value isn't statistically significant, I have to use a random effects model.
+
+summary(random) #results are not very significant at all.
+
+random_2 <- plm(loglabprod ~ corr, data = ultdata1.pd, index = c("Territory", "TIME"), model = "random")
+summary(random_2) #not good at all.
+
+```
+
+# Pooled Mean Groups, Mean Group Estimations
+I don't quite understand this, but this is just another way to esitmate the model. There is no way to actually have the lags and autoregressive elements of an ARDL model be a part of this, however it is interesting to look at the results. 
+```{r}
+#how about pmg or mg...
+
+pmg_1 <- pmg(formula, data = ultdata1.pd, model = "mg")
+summary(pmg_1) # interesting, it make sno sense considering that the capital/gdp ratio doesn't matter, but it is interesting never the less. 
+
+pmg_2 <- pmg(loglabprod ~ corr, data = ultdata1.pd, model = "mg")
+summary(pmg_2) # somewhat consistent with the first pmg model.
+
+pmg_3 <- pmg(formula, data = ultdata1.pd, model = "dmg")
+summary(pmg_3)
+
+pmg_4 <- pmg(formula, data = ultdata1.pd, model = "cmg")
+summary(pmg_4)
+
+
+library(PooledMeanGroup)
+#how do you even get this thing to work???
+
+coef <- summary(uecm_model)$coefficients
+
+coef <- (coef)
+
+parameters <- coef[1:10]
+
+sr_par <- parameters[c(6,8,10)]
+lr_par <- parameters[c(2,3,4,5)]
+ect <- recm_model$coefficients[6]
+
+class(lr_par)
+class(ect)
+class(c(1:18))
+
+sr_par <- as.vector(sr_par)
+lr_par <- as.vector(lr_par)
+
+#PMG(ect, sr_par, lr_par, ultdata1, quantity = c(1:18), const = FALSE) #yeah I can't get it to work.
+
+```
+
+# Arellano Bond Estimator/Model
+
+This model generally doesn't work because of the data I think. It can't make an invertible matrix because it's singular...
+
+```{r}
+
+#screw it we're doing gmmm
+
+
+testgmm <- pgmm(log(labprod) ~ lag((labprod), 0:1) + lag((corr), 0:1) + (corr) + lag((capitalgdp), 0:1) + (capitalgdp) + lag((pcteduc), 0:1) + (pcteduc) | lag((labprod), 2:99) + lag((corr), 2:99) + lag((capitalgdp), 2:99) + lag((pcteduc), 2:99), data = ultdata1.pd, model = "onestep",index = c("Territory"))
+
+testgmm <- pgmm(log(labprod) ~ lag(log(labprod), 0:1) + lag(log(corr), 1:2) + log(corr) + lag(log(capitalgdp), 1:2) + log(capitalgdp) | lag(log(labprod), 2:99) + lag(log(corr), 3:99) + lag(log(capitalgdp), 3:99), data = ultdata1, model = "onestep",index = c("Territory")) #it wasn't invertible, so it meant that there was some multicollinearity... uh oh I had to remove pcteduc
+
+#https://stats.stackexchange.com/questions/76488/error-system-is-computationally-singular-when-running-a-glm
+
+summary(testgmm, robust = FALSE)
+
+#data = ultdata1, order = c(1,2,2,1)
+
+table(index(ultdata1), useNA = "ifany")
+
+
+```
+
+# Two Stage Least Squares/IV
+
+Not really IV, well at least for the second part. I was attempting to see which ones will not be lagged, but who knows.
+```{r}
+
+library(nlme) #generalized linear regression OLS...
+
+library(AER)
+library(ivreg)
+tsls <- ivreg(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + mafia, data = ultdata1)
+bptest(tsls)
+summary(tsls)
+
+
+tsls1 <- ivreg(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + rdexpend + mafia, data = ultdata1)
+bptest(tsls1)
+summary(tsls1)
+
+
+```
+
+
+# Fixed Regressors ARDL Model 
+
+So here I make a pretty large assumption. I assume that the govt/gdp ratio does not change over time, and because of that it can still be used in the estimation. I also make the assumption that mafia is something that does not change over time as well. Both of these variables have to be exogenous, and by the previous `tsls` model, they really don't seem to be.
+
+Straight from the R-package itself, the fixed variables are not supposed to be lagged at all (so things like dummy variables would be fine). I guess this assumption is fine...
+
+```{r}
+iv_ardl <- ardl(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + mafia, data = ultdata1, order= c(1,1,1,1))
+iv_ardl0 <- ardl(loglabprod ~ corrmill + capitalgdp + decimaleduc | govtgdp, data = ultdata1, order = c(1,1,1,1))
+iv_ardl1 <- ardl(loglabprod ~ corrmill + capitalgdp + pcteduc | govtgdp + rdexpendgdp, data = ultdata1, order= c(1,1,1,1))
+iv_ardl_pd <- ardl(loglabprod ~ corr + capitalgdp + pcteduc | govtgdp + mafia, data = ultdata1.pd, order= c(1,1,1,1))
+
+iv_ardl_pd1 <- ardl(loglabprod ~ corrmill + capitalgdp + pcteduc | govtgdp, data = ultdata1.pd, order = c(1,1,1,1))
+# removed rdexpend + pop for multicollinearity
+summary(iv_ardl)
+summary(iv_ardl0)
+summary(iv_ardl1)
+summary(iv_ardl_pd)
+summary(iv_ardl_pd1)
+
+#stationarity, unit roots
+summary(ur.df(iv_ardl$residuals))
+summary(ur.df(iv_ardl0$residuals))
+summary(ur.df(iv_ardl1$residuals))
+summary(ur.df(iv_ardl_pd$residuals))
+
+#autocorrelation, not great
+bgtest(iv_ardl) #accepted at 5% interval
+dwtest(iv_ardl) # fails at 5% interval
+acf(iv_ardl$residuals, type = "correlation")
+
+bgtest(iv_ardl0) #accepted at 5% interval
+dwtest(iv_ardl0) # fails at 5% interval
+acf(iv_ardl0$residuals, type = "correlation")
+
+bgtest(iv_ardl1)
+dwtest(iv_ardl1)
+acf(iv_ardl1$residuals, type = "correlation")
+
+bgtest(iv_ardl_pd)
+dwtest(iv_ardl_pd) #oh this is bad.
+acf(iv_ardl_pd$residuals, type = "correlation")
+
+#heteroskedasticity
+bptest(iv_ardl) #... huh? it's still heteroskedastic
+bptest(iv_ardl1)
+
+#uecm_iv, recm_iv
+
+uecm_iv <- uecm(iv_ardl, case = 2)
+recm_iv <- recm(iv_ardl, case = 2)
+
+vif(iv_ardl)
+vif(iv_ardl1)
+
+
+summary(uecm_iv)
+summary(recm_iv)
+
+summ(model)
+bounds_f_test(iv_ardl, case = 2) #what is going on??? does the fixed variables help that much??
+bounds_f_test(iv_ardl, case = 3)
+bounds_t_test(iv_ardl, case = 3)
+
+```
+As you can see, this model works well, a bit too well might I add. 
+
+```{r}
+
+```
+
+#Using Dynlm package
+This seems to be much more tedious than the other R package that I have been working with for a while. Nothing seems to work... I think that is because my data isn't even a proper time series, but I don't know how to get it that way.
+```{r}
+library(dynlm)
+
+#about to destroy my data...
+
+reg_dyn <- dynlm(loglabprod ~ L(loglabprod, 1) + corrmill + L(corrmill, 1) + #this model has all lags of one.
+capitalgdp + L(capitalgdp, 1) + pcteduc + L(pcteduc, 1), data = ultdata1)
+
+reg_dynest <- dynlm(loglabprod ~ L(loglabprod, 1) + L(corr, 1) + L(capitalgdp, 1) + L(pcteduc, 1) +
+                    d(corr) + d(L(corr, 1)) + d(capitalgdp) + d(L(capitalgdp), 1) + d(pcteduc), data = zoo.test)
+
+
+summary(lm(reg_dyn)) #what?
+
+corr_dynlm <- dynlm(loglabprod ~ L(loglabprod, 1) + corr + L(corr, 1) + d(corr) + d(L(corr, 1)), data = ultdata1)
+summary(corr_dynlm)
+
+
+```
+
+
+```{r}
+
+#stargazer doesn't work smh
+stargazer(lm_model, uecm_lm, recm_lm, title = "Results", align = TRUE)
+
+
+library(modelsummary)
+modelsummary(list(
+  "OLS" = lm_model, 
+  "Unrestricted ECM" = uecm_lm, 
+  "Restricted ECM" = recm_lm), stars = TRUE
+             )
+
+modelsummary(list(
+  "OLS" = lm_model, 
+  "Unrestricted ECM" = uecm_lm, 
+  "Restricted ECM" = recm_lm), stars = TRUE, estimate = "p.value")
+```
+
+
+
+
